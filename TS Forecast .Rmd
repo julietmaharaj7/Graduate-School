@@ -1,0 +1,55 @@
+---
+title: "TS Forecast"
+author: "Juliet Maharaj"
+date: "5/14/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(stats)
+library(forecast)
+library(tseries)
+library(astsa)
+library(readxl)
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+model4 <- Arima(y = cogt, 
+                order = c(2, 1, 2), 
+                seasonal = list(order = c(1,1,1), period = 24))
+
+summary(model4)
+
+Acf(model4$residuals , 92)
+
+```
+
+```{r}
+model5 <- Arima(y = cogt, 
+                order = c(2, 1, 2), 
+                seasonal = list(order = c(2,1,1), period = 24))
+
+summary(model5)
+
+Acf(model5$residuals , 92)
+```
+
+```{r}
+forecast <- naive()
+
+```
+
+```{r}
+table1A <- data.frame(
+  AIC = c(model1$aic, model2$aic, model3$aic, model4$aic, model5$aic, model6$aic, model7$aic, model8$aic) , 
+  BIC = c(model1$bic, model2$bic, model3$bic, model4$bic, model5$bic, model6$bic, model7$bic, model8$bic) , 
+  Variance = c(model1$sigma2, model2$sigma2, model3$sigma2, model4$sigma2, model5$sigma2, model6$sigma2, model7$sigma2, model8$sigma2))
+
+table1A
+```
